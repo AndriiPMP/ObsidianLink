@@ -37,4 +37,6 @@ def get_files_data(file_paths_list, formated_path_list):
             print(f"Не удалось прочитать {path}: {e}")
     return files_data
 
+
+
     

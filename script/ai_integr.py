@@ -5,7 +5,7 @@ client = OpenAI (
     api_key="not_needed"
 )
 
-responce = client.chat.completions.create(
+responce = client.embeddings.create(
     model="text-embedding-qwen3-embedding-8b"
     messages=[
         {"role": "user", "content": ""}
