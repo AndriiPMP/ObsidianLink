@@ -5,9 +5,9 @@ client = OpenAI (
     api_key="not_needed"
 )
 
-responce = client.embeddings.create( # Вызываем специально для ембединг моделей
-    model="text-embedding-qwen3-embedding-8b" 
-    messages=[
-        {"role": "user", "content": ""}
-    ]
-)
+def generate_embedding(text):
+    responce = client.embeddings.create( # Вызываем специально для ембединг моделей
+        model="text-embedding-qwen3-embedding-8b",
+        input=text
+    )
+    return responce.data[0].embedding

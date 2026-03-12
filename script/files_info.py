@@ -4,50 +4,46 @@ target_dir = r"E:\План\IT" # Общие переменные которые 
 base_dir = r"E:\План"
 
 # Функция которая получает полные путя
-def get_file_paths(directory):                                     
+def get_file_paths():    
      file_paths = [] # Тут хранятся пути к файлам                                         
-     for root, directories, files in os.walk(directory):            
+     for root, directories, files in os.walk(target_dir):            
          for filename in files:                                     
              filepath = os.path.join(root, filename)                
              file_paths.append(filepath)                            
      return file_paths                                               
 
 # Функция которая получает обрезанные путя
-def format_paths(existing_paths, base_path):
+def format_paths(existing_paths, base_dir):
+    existing_paths = get_file_paths(target_dir)
+
     formated_paths = [] # Тут хранится масив путей отформатированных для ссылок в Obsidian
     for path in existing_paths:
-        rel_path = os.path.relpath(path, base_path)
+        rel_path = os.path.relpath(path, base_dir)
         formated_paths.append(rel_path)
     return formated_paths
 
 # Функция которая получает содержимое файлов
-def get_files_content(file_path_list):
+def get_files_content():
     contents=[]
-    for path in file_path_list:
+    for path in get_file_paths:
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
-            content.append(content)
+            contents.append(content)
         except Exception as e:
             print(f"Не удалось прочитать {path}: {e}")
     return contents
 
 # Функция которая собирает масив
-def get_files_data(file_paths_list, formated_path_list, file_content_list):
-    files_data = []  # Тут хранится библиотека путей файлов и их содержимого
+def get_files_data():
+      file_paths = get_file_paths()
+      formated_paths = format_paths()
+      contents = get_files_content()
 
-    for full_path, formated_path, file_content in zip(
-        file_paths_list, 
-        formated_path_list, 
-        file_content_list
-        ):
-        entry = { # Показываем что мы хотим закинуть в библиотеку
-            "path": full_path,
-            "formated_path": formated_path,
-            "content": file_content
-            }
-        files_data.append(entry)
-    return files_data
+      return [
+          {"path": p, "formated_path": fp, "content": c}
+          for p, fp, c in zip(file_paths, formated_paths, contents)     
+      ]
 
 
 
