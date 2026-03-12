@@ -6,7 +6,9 @@ files_data = get_files_data()
 
 COLLECTION_NAME = "obsidian_base"
 
-vector = []
+vector = [] 
+
+# Создаём новый вектор и помещаем его в хранилище вместе с метаданными
 for file_data in files_data:
     content = file_data["content"],
     formated_path = file_data["formated_path"],
