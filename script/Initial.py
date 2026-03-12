@@ -19,16 +19,17 @@ def format_paths(existing_paths, base_path):
     return formated_paths
 
 
-def get_files_data(file_paths_list):
+def get_files_data(file_paths_list, formated_path_list):
     files_data = []  #тут хранится библиотека путей файлов и их содержимого
 
-    for path in file_paths_list:
+    for path, formated_path in zip(file_paths_list, formated_path_list):
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
 
             entry = {
                 "path": path,
+                "formated_path": formated_path,
                 "content": content
             }
             files_data.append(entry)
