@@ -14,7 +14,7 @@ def get_file_paths():
 
 # Функция которая получает обрезанные путя
 def format_paths(existing_paths, base_dir):
-    existing_paths = get_file_paths(target_dir)
+    existing_paths = get_file_paths()
 
     formated_paths = [] # Тут хранится масив путей отформатированных для ссылок в Obsidian
     for path in existing_paths:
@@ -25,7 +25,7 @@ def format_paths(existing_paths, base_dir):
 # Функция которая получает содержимое файлов
 def get_files_content():
     contents=[]
-    for path in get_file_paths:
+    for path in get_file_paths():
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
