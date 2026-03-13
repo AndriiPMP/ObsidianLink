@@ -31,3 +31,19 @@ def test_get_files_content():
     for content in contents:
         assert isinstance(content, str)
         assert len(content) > 0 
+
+def test_get_files_data():
+    data = get_files_data()
+
+    assert isinstance(data, list)
+    assert len(data) > 0
+    for item in data:
+        assert isinstance(item, dict)
+        assert "path" in item
+        assert "formated_path" in item 
+        assert "content" in item
+        assert isinstance(item["path"], str)
+        assert isinstance(item["formated_path"], str)
+        assert isinstance(item["content"], str)
+        assert os.path.exists(item["path"])
+        assert not os.path.isabs(item["formated_path"])

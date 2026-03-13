@@ -37,7 +37,7 @@ def get_files_content():
 # Функция которая собирает масив
 def get_files_data():
       file_paths = get_file_paths()
-      formated_paths = format_paths()
+      formated_paths = format_paths(get_file_paths, base_dir)
       contents = get_files_content()
 
       return [
