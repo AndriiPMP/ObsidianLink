@@ -1,0 +1,27 @@
+from configuration import client
+from ai_integr import generate_embedding
+from redis.redis_queue import get_next_task
+
+
+
+def search_similar(client, collection_name, content, limit=3):
+    query_vector = generate_embedding(content) # Прямо внутри данной функции генерируем вектор
+
+    results = client.search( # Показываем что мы должны получить как результат
+        collection_name=collection_name,
+        query_vector=query_vector,
+        limit=limit
+    )
+
+    return results # Возвращаем результат для переиспользования
+
+def get_redis_content():
+    task:dict = get_next_task()
+    content = task.get(content)
+
+    return search_similar(
+        client=client,
+        collection_name=collection_name,
+        conntent=content,
+        limit=limit,
+    )

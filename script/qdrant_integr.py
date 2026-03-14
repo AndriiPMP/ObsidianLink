@@ -36,13 +36,5 @@ def add_document(client, collection_name, vector, formated_path, full_path, cont
         points=[point]
     )
 
-def search_similar(client, collection_name, content, limit=3):
-    query_vector = generate_embedding(content) # Прямо внутри данной функции генерируем вектор
 
-    results = client.search( # Показываем что мы должны получить как результат
-        collection_name=collection_name,
-        query_vector=query_vector,
-        limit=limit
-    )
 
-    return results # Возвращаем результат для переиспользования
