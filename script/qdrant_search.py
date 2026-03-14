@@ -1,6 +1,7 @@
 from configuration import client
 from ai_integr import generate_embedding
 from redis.redis_queue import get_next_task
+import os
 
 
 
@@ -36,3 +37,14 @@ def get_formated_paths_from_search(client, collection_name, content, limit=3):
             paths.append(formated_path)
 
     return paths
+
+def add_similar_links_to_file(task, paths):
+    paths = get_formated_paths_from_search(paths)
+    file_path = task.get("path")
+
+    links = "\n\n"
+    for path in paths:
+        links += f" - [[{path}]]\n"
+
+    with open(file_path, "a", encoding=utf-8) as f:
+        f.write(links)
