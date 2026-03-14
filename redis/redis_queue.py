@@ -1,15 +1,24 @@
 import redis
 import json
-from redis_queue_store import get_pending_tasks, save_queue
+from redis_queue_store import get_pending_tasks, save_queue, has_pending_tasks, remove_pending_tasks
 from script.files_info import get_files_data
 
 queue_name = "tasks"
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
+def init_queue():
+
+    if has_pending_tasks():
+        restore_queue()
+    else:
+        create_new_queue
+
 def restore_queue():
+
     pending_tasks = get_pending_tasks()
     r.delete(queue_name)
+
     for task in pending_tasks:
         r.rpush(queue_name, json.dumps(task))
 
@@ -20,6 +29,16 @@ def create_new_queue():
 
     r.delete(queue_name)
     for file_info in files_info:
-        r.rpush(queue_name, json.dumps(files_info))
+        r.rpush(queue_name, json.dumps(file_info))
     
     save_queue(files_info)
+
+def get_next_task():
+    task_json = r.lpop(queue_name)
+    
+    if task_json:
+        return json.loads(task_json)
+    return None
+
+def task_completed(task: dict):
+    remove_pending_tasks(task)
