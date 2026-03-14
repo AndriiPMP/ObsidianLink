@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 import os
 
+
 redis_queue_dir = os.path.dirname(__file__)
 redis_queue_store = os.path.join(redis_queue_dir, "queue_state.json")
 
@@ -47,3 +48,5 @@ def remove_pending_tasks(task: dict):
     task_path = task.get("path")
     update_pending = [t for t in pending if t.get("path") != task_path]
     save_queue(update_pending)
+
+
