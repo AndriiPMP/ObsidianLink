@@ -1,6 +1,4 @@
-import redis
-
-r = redis.Redis(host='localhost', port=6379, db=0)
+from configuration import r
 
 pubsub = r.pubsub()
 pubsub.subscribe('__keyevent@__:lpop')

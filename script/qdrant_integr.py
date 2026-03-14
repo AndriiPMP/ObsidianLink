@@ -1,9 +1,8 @@
-from qdrant_client import QdrantClient 
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from hash_alg import generate_hash_filepath
 from ai_integr import generate_embedding
+from configuration import client
 
-client = QdrantClient(host="localhost", port=6333) # Подключаемся к квадранту
 
 def create_collection_if_not_exists():
     if not client.collection.exists("obsidian_base"):
@@ -37,8 +36,8 @@ def add_document(client, collection_name, vector, formated_path, full_path, cont
         points=[point]
     )
 
-def search_similar(client, collection_name, query_text, limit=3):
-    query_vector = generate_embedding(query_text) # Прямо внутри данной функции генерируем вектор
+def search_similar(client, collection_name, content, limit=3):
+    query_vector = generate_embedding(content) # Прямо внутри данной функции генерируем вектор
 
     results = client.search( # Показываем что мы должны получить как результат
         collection_name=collection_name,

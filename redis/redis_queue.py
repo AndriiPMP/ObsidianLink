@@ -2,10 +2,9 @@ import redis
 import json
 from redis_queue_store import get_pending_tasks, save_queue, has_pending_tasks, remove_pending_tasks
 from script.files_info import get_files_data
+from configuration import r
 
 queue_name = "tasks"
-
-r = redis.Redis(host='localhost', port=6379, db=0)
 
 def init_queue():
 
