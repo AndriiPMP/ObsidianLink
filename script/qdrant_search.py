@@ -25,3 +25,14 @@ def get_redis_content():
         conntent=content,
         limit=limit,
     )
+
+def get_formated_paths_from_search(client, collection_name, content, limit=3):
+    results = search_similar(client, collection_name, content, limit)
+    paths=[]
+    
+    for result in results:
+        formated_path = result.payload.get("formated_path")
+        if formated_path:
+            paths.append(formated_path)
+
+    return paths
