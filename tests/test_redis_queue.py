@@ -2,7 +2,7 @@ import json
 import pytest
 from unittest.mock import patch
 from configuration import r 
-from redis_implement.redis_queue import restore_queue, queue_name, create_new_queue
+from redis_implement.redis_queue import restore_queue, queue_name, create_new_queue, get_next_task
 
 def test_restore_queue():
 
@@ -47,3 +47,23 @@ def test_create_new_queue():
 
     r.delete(queue_name)
 
+def test_get_next_task():
+    r.delete(queue_name)
+    r.rpush(queue_name, json.dumps({"path": "test1.md", "content": "content 1"}))
+    r.rpush(queue_name, json.dumps({"path": "test2.md", "content": "content 2"}))
+
+    task = get_next_task()
+
+    assert task is not None
+    assert task["path"] == "test1.md"
+    assert task["content"] == "content 1"
+
+    queue_len = r.llen(queue_name)
+    assert queue_len == 1
+
+    task = get_next_task()
+    assert task["path"] == "test2.md"
+
+    r.delete(queue_name)
+
+    
