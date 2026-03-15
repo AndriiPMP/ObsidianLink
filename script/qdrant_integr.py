@@ -1,6 +1,5 @@
 from qdrant_client.models import Distance, VectorParams, PointStruct
-from hash_alg import generate_hash_filepath
-from ai_integr import generate_embedding
+from script.hash_alg import generate_hash_filepath
 from configuration import client
 
 
