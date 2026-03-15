@@ -1,6 +1,9 @@
-import redis
+import redis_implement
 import json
-from redis_queue_store import get_pending_tasks, save_queue, has_pending_tasks, remove_pending_tasks
+from redis_implement.redis_queue_store import (get_pending_tasks, 
+                                               save_queue, 
+                                               has_pending_tasks, 
+                                               remove_pending_tasks)
 from script.files_info import get_files_data
 from configuration import r
 

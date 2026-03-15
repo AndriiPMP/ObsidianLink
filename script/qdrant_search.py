@@ -1,6 +1,6 @@
 from configuration import client
 from ai_integr import generate_embedding
-from redis.redis_queue import get_next_task
+from redis_implement.redis_queue import get_next_task
 import os
 
 

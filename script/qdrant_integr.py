@@ -4,7 +4,7 @@ from configuration import client
 
 
 def create_collection_if_not_exists():
-    if not client.collection.exists("obsidian_base"):
+    if not client.collection_exists("obsidian_base"):
         client.create_collection( # Создаём саму колекцию
             collection_name="obsidian_base",
             vectors_config=VectorParams(
@@ -12,9 +12,6 @@ def create_collection_if_not_exists():
                 distance=Distance.COSINE
     )
 )
-        
-create_collection_if_not_exists()
-
 
 def add_document(client, collection_name, vector, formated_path, full_path, content):
 
