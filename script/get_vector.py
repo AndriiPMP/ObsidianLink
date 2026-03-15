@@ -1,9 +1,8 @@
 from ai_integr import generate_embedding
 from qdrant_integr import add_document, client
-import redis_implement 
 import json
+from configuration import r
 
-r = redis_implement.Redis(host='localhost', port=6379, db=0)
 
 
 while True:
