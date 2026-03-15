@@ -2,7 +2,12 @@ import json
 import pytest
 from unittest.mock import patch
 from configuration import r 
-from redis_implement.redis_queue import restore_queue, queue_name, create_new_queue, get_next_task
+from redis_implement.redis_queue import (restore_queue, 
+                                         queue_name, 
+                                         create_new_queue, 
+                                         get_next_task, 
+                                         task_completed,
+                                         get_pending_tasks)
 
 def test_restore_queue():
 
@@ -66,4 +71,29 @@ def test_get_next_task():
 
     r.delete(queue_name)
 
-    
+
+def test_task_completed(tmp_path):
+    test_tasks = [
+    {"path": "test/file1.md", "content": "content 1"},
+    {"path": "test/file2.md", "content": "content 2"},
+    {"path": "test/file3.md", "content": "content 3"},
+    ]
+
+    temp_store = tmp_path / "queue_state.json"
+
+    with patch("redis_implement.redis_queue_store.redis_queue_store", str(temp_store)):
+        from redis_implement.redis_queue_store import save_queue
+
+        save_queue(test_tasks)
+
+        assert len(get_pending_tasks()) == 3 
+
+        task_completed({"path": "test/file2.md", "content": "content 2"})
+
+        pending = get_pending_tasks()
+        assert len(pending) == 2 
+        paths = [t["path"] for t in pending]
+        assert "test/file2.md" not in paths
+        assert "test/file1.md" in paths
+        assert "test/file3.md" in paths
+
