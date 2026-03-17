@@ -114,3 +114,33 @@ def test_save_queue_empty(tmp_path):
 
     assert state["pending"] == []
     assert state["count"] == 0
+
+def test_load_queue_state(tmp_path):
+    temp_file = tmp_path / "queue_state.json"
+
+    test_data = {
+        "pending": [
+            {"path": "note1.md", "action": "create"},
+            {"path": "note2.md", "action": "update"}            
+        ],
+        "last_updated": "2026-03-17T10:30:00",
+        "count": 2
+    }
+
+    with open (temp_file, "w", encoding="utf-8") as f:
+        json.dump(test_data, f)
+
+    with patch("redis_implement.redis_queue_store.redis_queue_store", str(temp_file)):
+        result = load_queue_state()
+
+    assert result == test_data
+    assert len(result["pending"]) == 2
+    assert result["pending"][0]["path"] == "note1.md"
+
+def test_load_queue_state_empty(tmp_path):
+    temp_file = tmp_path / "queue_state.json"
+    
+    with patch("redis_implement.redis_queue_store.redis_queue_store", str(temp_file)):
+        result = load_queue_state()
+
+    assert result == {"pending": [], "last_updated": None}

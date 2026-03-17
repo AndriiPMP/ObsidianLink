@@ -9,7 +9,7 @@ redis_queue_store = os.path.join(redis_queue_dir, "queue_state.json")
 
 def load_queue_state() -> dict:
     if not os.path.exists(redis_queue_store):
-        return {"pending]": [], "last_updated": None}
+        return {"pending": [], "last_updated": None}
     try: 
         with open(redis_queue_store, "r", encoding="utf-8") as f:
             return json.load(f)
