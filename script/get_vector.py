@@ -1,35 +1,38 @@
-from ai_integr import generate_embedding
-from qdrant_integr import add_document, client
-import json
-from configuration import r
-
-
-
-while True:
-    item = r.lpop('embedding_queue')
-    if item is None:
-        break
-
-file_items = json.loads(item)
+from script.ai_integr import generate_embedding
+from redis_implement.redis_queue import get_next_task, task_completed
+from script.qdrant_integr import add_document, client
 
 
 COLLECTION_NAME = "obsidian_base"
 
-vector = [] 
+def index_files():
+    while True:
+        task = get_next_task()
+        
+        if task is None:
+            print("   Индексация завершена.")
+            break
+        
+        print(f"   Индексирую: {task.get('path')}")
 
-def process_and_add_doc(task:dict):
+        process_and_add_doc(task)        
+        task_completed(task)
+
+def process_and_add_doc(task: dict):
+
 
     file_path = task.get("path")
-    formated_path = task.get("formated_task")
+    formated_path = task.get("formated_path")
     content = task.get("content")
-    
-    embedding = generate_embedding()
+
+    embedding = generate_embedding(content)
+
     add_document(
         client=client,
         collection_name=COLLECTION_NAME,
         vector=embedding,
-        formated_path= file_path, 
-        full_path=formated_path,
+        formated_path=formated_path,
+        full_path=file_path,
         content=content
     )
 

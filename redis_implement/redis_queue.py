@@ -14,7 +14,7 @@ def init_queue():
     if has_pending_tasks():
         restore_queue()
     else:
-        create_new_queue
+        create_new_queue()
 
 def restore_queue():
 

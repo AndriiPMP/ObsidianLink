@@ -1,9 +1,9 @@
 from configuration import client
-from ai_integr import generate_embedding
-from redis_implement.redis_queue import get_next_task
+from script.ai_integr import generate_embedding
+from redis_implement.redis_queue import get_next_task, task_completed
 import os
 
-
+collection_name = "obsidian_base"
 
 def search_similar(client, collection_name, content, limit=3):
     query_vector = generate_embedding(content) # Прямо внутри данной функции генерируем вектор
@@ -39,12 +39,37 @@ def get_formated_paths_from_search(client, collection_name, content, limit=3):
     return paths
 
 def add_similar_links_to_file(task, paths):
-    paths = get_formated_paths_from_search(paths)
     file_path = task.get("path")
 
     links = "\n\n"
     for path in paths:
         links += f" - [[{path}]]\n"
 
-    with open(file_path, "a", encoding=utf-8) as f:
+    with open(file_path, "a", encoding="utf-8") as f:
         f.write(links)
+
+def process_links():
+    """Этап 2: Ищем похожие и добавляем ссылки"""
+    while True:
+        task = get_next_task()
+        
+        if task is None:
+            print("   Обработка завершена.")
+            break
+        
+        print(f"   Обрабатываю: {task.get('path')}")
+        
+        content = task.get("content")
+        
+        paths = get_formated_paths_from_search(
+            client=client,
+            collection_name=collection_name,
+            content=content,
+            limit=3
+        )
+        
+        if paths:
+            add_similar_links_to_file(task, paths)
+            print(f"   Добавлено ссылок: {len(paths)}")
+        
+        task_completed(task)

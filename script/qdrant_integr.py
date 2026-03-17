@@ -8,7 +8,7 @@ def create_collection_if_not_exists():
         client.create_collection( # Создаём саму колекцию
             collection_name="obsidian_base",
             vectors_config=VectorParams(
-                size=2048,
+                size=4096,
                 distance=Distance.COSINE
     )
 )
