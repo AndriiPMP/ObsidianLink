@@ -1,5 +1,5 @@
 from configuration import client, r
-from script.qdrant_integr import create_collection_if_not_exists
+from script.mongo_integr import create_collection_if_not_exists
 from script.qdrant_search import process_links
 from redis_implement.redis_queue import init_queue
 from script.get_vector import index_files
@@ -15,11 +15,11 @@ def main():
     print("1. Создаём коллекцию Qdrant...")
     create_collection_if_not_exists()
     
-    print("2. Инициализируем очередь задач...")
-    init_queue()
+    #print("2. Инициализируем очередь задач...")
+    #init_queue()
     
-    print("3. Создаём embeddings и добавляем в Qdrant...")
-    index_files()
+    #print("3. Создаём embeddings и добавляем в Qdrant...")
+    #index_files()
     
     print("\n=== ЭТАП 2: Добавление ссылок ===")
     

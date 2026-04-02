@@ -8,9 +8,9 @@ collection_name = "obsidian_base"
 def search_similar(client, collection_name, content, limit=3):
     query_vector = generate_embedding(content) # Прямо внутри данной функции генерируем вектор
 
-    results = client.search( # Показываем что мы должны получить как результат
+    results = client.query_points( # Показываем что мы должны получить как результат
         collection_name=collection_name,
-        query_vector=query_vector,
+        query=query_vector,
         limit=limit
     )
 
@@ -31,10 +31,13 @@ def get_formated_paths_from_search(client, collection_name, content, limit=3):
     results = search_similar(client, collection_name, content, limit)
     paths=[]
     
-    for result in results:
+    for result in results.points:
         formated_path = result.payload.get("formated_path")
         if formated_path:
-            paths.append(formated_path)
+                if formated_path.endswith(".md"):
+                    formated_path = formated_path[:-3]
+                formated_path = formated_path.replace("\\", "/")
+                paths.append(formated_path)
 
     return paths
 
@@ -49,7 +52,6 @@ def add_similar_links_to_file(task, paths):
         f.write(links)
 
 def process_links():
-    """Этап 2: Ищем похожие и добавляем ссылки"""
     while True:
         task = get_next_task()
         

@@ -1,5 +1,5 @@
 import pytest
-from script.qdrant_integr import create_collection_if_not_exists
+from script.mongo_integr import create_collection_if_not_exists
 
 def test_create_collection_if_not_exists(mocker):
 
