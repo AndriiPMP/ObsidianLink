@@ -1,6 +1,6 @@
 from configuration import client, r
 from script.mongo_integr import create_collection_if_not_exists
-from script.qdrant_search import process_links
+from script.mongo_search import process_links
 from redis_implement.redis_queue import init_queue
 from script.get_vector import index_files
 import time
