@@ -1,36 +1,54 @@
-from qdrant_client.models import Distance, VectorParams, PointStruct
+from pymongo.operations import SearchIndexModel
 from script.hash_alg import generate_hash_filepath
-from configuration import client
+from configuration import (
+    client,
+    MONGODB_COLLECTION,
+    MONGODB_VECTOR_INDEX,
+    MONGODB_VECTOR_DIMENSIONS
+)
 
 
 def create_collection_if_not_exists():
-    if not client.collection_exists("obsidian_base"):
-        client.create_collection( # Создаём саму колекцию
-            collection_name="obsidian_base",
-            vectors_config=VectorParams(
-                size=4096,
-                distance=Distance.COSINE
-    )
-)
+    if MONGODB_COLLECTION not in client.list_collection_names():
+        client.create_collection(MONGODB_COLLECTION)
+
+    collection = client[MONGODB_COLLECTION]
+    existing_indexes = {index["name"] for index in collection.list_search_indexes()}
+
+    if MONGODB_VECTOR_INDEX not in existing_indexes:
+        vector_index = SearchIndexModel(
+            definition={
+                "fields": [
+                    {
+                        "type": "vector",
+                        "path": "embedding",
+                        "numDimensions": MONGODB_VECTOR_DIMENSIONS,
+                        "similarity": "cosine",
+                    }
+                ]
+            },
+            name = MONGODB_VECTOR_INDEX,
+            type="vectorSearch",
+        )
+
+        collection.create_search_index(model=vector_index)
 
 def add_document(client, collection_name, vector, formated_path, full_path, content):
+    collection = client[collection_name]
 
-    id_number = generate_hash_filepath(formated_path) # Генерируем хеш для каждого пути
-
-    point = PointStruct(  # Указываем что именно помещаем в квадрант
-        id=id_number,
-        vector=vector,
-        payload={
-            "formated_path": formated_path,
-            "full_path": full_path,
-            "content": content
-        }
+    collection.update_one(
+        {"_id": formated_path},
+        {
+            "$set":{
+                "formated_path": formated_path,
+                "full_path": full_path,
+                "content": content,
+                "embedding": vector,
+            }
+        },
+        upsert=True,
     )
 
-    client.upsert( # Потом непосредственно помещаем
-        collection_name=collection_name,
-        points=[point]
-    )
 
 
 
