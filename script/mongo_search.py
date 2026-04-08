@@ -1,24 +1,40 @@
-from configuration import client
+from configuration import client, MONGODB_COLLECTION, MONGODB_VECTOR_INDEX
 from script.ai_integr import generate_embedding
 from redis_implement.redis_queue import get_next_task, task_completed
 import os
 
-collection_name = "obsidian_base"
+collection_name = MONGODB_COLLECTION
 
 def search_similar(client, collection_name, content, limit=3):
-    query_vector = generate_embedding(content) # Прямо внутри данной функции генерируем вектор
+    query_vector = generate_embedding(content) 
+    collection = client[collection_name]
 
-    results = client.query_points( # Показываем что мы должны получить как результат
-        collection_name=collection_name,
-        query=query_vector,
-        limit=limit
-    )
+    pipeline = [
+        {
+        "$vectorSearch":{
+            "index": MONGODB_VECTOR_INDEX,
+            "path": "embedding",
+            "queryVector": query_vector,
+            "numCandidates": max(limit * 20, 100),
+            "limit": limit
+        }
+    },
+    {
+        "$project": {
+            "_id": 1,
+            "formated_path": 1,
+            "full_path": 1,
+            "content": 1,
+            "score": {"$meta": "vectorSearchScore"},
+            }
+        },
+    ]
 
-    return results # Возвращаем результат для переиспользования
+    return list(collection.aggregate(pipeline))
 
 def get_redis_content():
-    task:dict = get_next_task()
-    content = task.get(content)
+    task = get_next_task()
+    content = task.get("content")
 
     return search_similar(
         client=client,
@@ -31,8 +47,8 @@ def get_formated_paths_from_search(client, collection_name, content, limit=3):
     results = search_similar(client, collection_name, content, limit)
     paths=[]
     
-    for result in results.points:
-        formated_path = result.payload.get("formated_path")
+    for result in results:
+        formated_path = result.get("formated_path")
         if formated_path:
                 if formated_path.endswith(".md"):
                     formated_path = formated_path[:-3]

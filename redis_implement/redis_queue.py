@@ -1,4 +1,3 @@
-import redis_implement
 import json
 from redis_implement.redis_queue_store import (get_pending_tasks, 
                                                save_queue, 
