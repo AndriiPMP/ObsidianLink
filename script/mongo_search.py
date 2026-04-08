@@ -32,14 +32,20 @@ def search_similar(client, collection_name, content, limit=3):
 
     return list(collection.aggregate(pipeline))
 
-def get_redis_content():
+def get_redis_content(limit=3):
     task = get_next_task()
+    if task is None:
+        return[
+
+        ]
     content = task.get("content")
+    if not content:
+        return[]
 
     return search_similar(
         client=client,
         collection_name=collection_name,
-        conntent=content,
+        content=content,
         limit=limit,
     )
 
