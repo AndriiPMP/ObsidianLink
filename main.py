@@ -1,25 +1,25 @@
-from configuration import client, r
 from script.mongo_integr import create_collection_if_not_exists
 from script.mongo_search import process_links
 from redis_implement.redis_queue import init_queue
 from script.get_vector import index_files
+from configuration import MONGODB_COLLECTION
 import time
 
-collection_name = "obsidian_base"
+collection_name = MONGODB_COLLECTION
 
 def main():
     print("=== ObsidianLinks запущен ===\n")
     
     print("=== ЭТАП 1: Индексация файлов ===")
     
-    print("1. Создаём коллекцию Qdrant...")
+    print("1. Создаём коллекцию MongoDB...")
     create_collection_if_not_exists()
     
-    #print("2. Инициализируем очередь задач...")
-    #init_queue()
+    print("2. Инициализируем очередь задач...")
+    init_queue()
     
-    #print("3. Создаём embeddings и добавляем в Qdrant...")
-    #index_files()
+    print("3. Создаём embeddings и добавляем в MongoDB...")
+    index_files()
     
     print("\n=== ЭТАП 2: Добавление ссылок ===")
     
