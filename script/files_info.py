@@ -1,7 +1,10 @@
-import os                                                          
+import os
+from dotenv import load_dotenv           
 
-target_dir = r"E:\План\IT\АИ агенты" # Общие переменные которые будут использоваться внутри функций
-base_dir = r"E:\План"
+load_dotenv()
+
+target_dir = os.getenv("TARGET_DIR")
+base_dir = os.getenv("BASE_DIR")
 
 # Функция которая получает полные путя
 def get_file_paths():    
