@@ -1,7 +1,7 @@
 from pymongo.operations import SearchIndexModel
 from script.hash_alg import generate_hash_filepath
 from configuration import (
-    client,
+    mongo_client,
     MONGODB_COLLECTION,
     MONGODB_VECTOR_INDEX,
     MONGODB_VECTOR_DIMENSIONS
@@ -9,10 +9,10 @@ from configuration import (
 
 
 def create_collection_if_not_exists():
-    if MONGODB_COLLECTION not in client.list_collection_names():
-        client.create_collection(MONGODB_COLLECTION)
+    if MONGODB_COLLECTION not in mongo_client.list_collection_names():
+        mongo_client.create_collection(MONGODB_COLLECTION)
 
-    collection = client[MONGODB_COLLECTION]
+    collection = mongo_client[MONGODB_COLLECTION]
     existing_indexes = {index["name"] for index in collection.list_search_indexes()}
 
     if MONGODB_VECTOR_INDEX not in existing_indexes:
