@@ -5,7 +5,7 @@ import redis
 
 
 MONGODB_URI = os.getenv("MONGODB_URI")
-MONGODB_DB = os.getenv("MONGODB_DB", "obsidian")
+MONGODB_DB = os.getenv("MONGODB_DB", "obsidian_base")
 MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION", "obsidian_base")
 MONGODB_VECTOR_INDEX = os.getenv("MONGODB_VECTOR_INDEX", "obsidian_vector_index")
 MONGODB_VECTOR_DIMENSIONS = int(os.getenv("MONGODB_VECTOR_DIMENSIONS", "4096"))
