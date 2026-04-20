@@ -4,7 +4,7 @@ from redis_implement.redis_queue import get_next_task, task_completed
 
 collection_name = MONGODB_COLLECTION
 
-def search_similar(client, collection_name, content, limit=3):
+def search_similar(client, collection_name, content, limit=4):
     db = client[MONGODB_DB]
     query_vector = generate_embedding(content) 
     collection = db[collection_name]
@@ -27,7 +27,7 @@ def search_similar(client, collection_name, content, limit=3):
             "content": 1,
             "score": {"$meta": "vectorSearchScore"},
             }
-    }
+    },
             {
             "$match": {
                 "score": {"$gte": 0.775}
@@ -54,7 +54,7 @@ def get_redis_content(limit=3):
         limit=limit,
     )
 
-def get_formated_paths_from_search(client, collection_name, content, current_formated_path, limit=3):
+def get_formated_paths_from_search(client, collection_name, content, current_formated_path, limit=4):
     results = search_similar(client, collection_name, content, limit)
     paths=[]
 
@@ -107,7 +107,7 @@ def process_links():
             collection_name=collection_name,
             content=content,
             current_formated_path=task.get("formated_path"),
-            limit=3,
+            limit=4,
         )
         
         if paths:

@@ -6,6 +6,8 @@ from tui.scripts.element_counter import count_queue_items
 from dotenv import set_key, load_dotenv
 from main import main
 from threading import Thread
+import os
+from redis_implement.redis_queue_store import redis_queue_store
 
 class StageScreen(Screen):
     def compose(self) -> ComposeResult:
@@ -72,6 +74,12 @@ class ProgressScreen(Screen):
         yield ProgressBar(total=1, show_percentage=True, show_eta=False, id="files-bar")
 
     def on_mount(self) -> None:
+        self.set_interval(0.5, self.wait_for_queue_file)
+
+    def wait_for_queue_file(self) -> None:
+        if not os.path.exists(redis_queue_store):
+            return
+
         self.total_files = count_queue_items()
         self.update_progress()
         self.set_interval(1, self.update_progress)
