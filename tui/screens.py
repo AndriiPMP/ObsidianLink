@@ -1,23 +1,59 @@
-from textual.screen import Screen
+from textual.screen import Screen, ModalScreen
 from textual.app import ComposeResult
-from textual.widgets import Header, Footer, ListView, ListItem, Label, ProgressBar, Static
+from textual.containers import Vertical
+from textual.widgets import Header, Footer, ListView, ListItem, Label, ProgressBar, Static, Button, Input
 from tui.scripts.element_counter import count_queue_items
+from dotenv import set_key
 
 class StageScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
+        yield Input(
+            value="",
+            placeholder="Путь к папке",
+            id="target-dir",
+        )
+        yield Button("Сохранить и начать", id="start")
         yield ListView(
             ListItem(Label("0  Полный прогон")),
-            ListItem(Label("1  Начать с этапа 2")),
             id="stage-list",
         )
         yield Footer()
 
     def on_mount(self):
-        self.query_one(ListView).focus()
+        self.query_one("#target-dir", Input).focus()
 
-    def on_list_view_selected(self, event: ListView.Selected):
-        self.dismiss(event.index)
+    def on_button_pressed(self, event: Button.Pressed):
+        if event.button.id == "start":
+            target_dir = self.query_one("#target-dir", Input).value.strip()
+            if target_dir:
+                self.app.push_screen(ConfirmScreen(target_dir), self.on_confirm)
+
+    def on_confirm(self, confirmed: bool):
+        if not confirmed:
+            return
+
+        target_dir = self.query_one("#target-dir", Input).value.strip()
+        set_key(".env", "TARGET_DIR", target_dir)
+
+
+class ConfirmScreen(ModalScreen[bool]):
+    def __init__(self, target_dir: str) -> None:
+        super().__init__()
+        self.target_dir = target_dir
+
+    def compose(self) -> ComposeResult:
+        yield Vertical(
+            Static("Начать обработку?"),
+            Button("Да", id="yes"),
+            Button("Нет", id="no"),
+        )
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        if event.button.id == "yes":
+            self.dismiss(True)
+        else:
+            self.dismiss(False)
 
 
 class ProgressScreen(Screen):
