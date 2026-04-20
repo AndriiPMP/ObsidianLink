@@ -12,38 +12,27 @@ STAGE = 0
 def main():
     global STAGE
 
-    print("=== ObsidianLinks запущен ===\n")
 
-    print("0. Создаём backup...")
     create_backup()
 
     if STAGE == 0:
-    
-        print("=== ЭТАП 1: Индексация файлов ===")
-    
-        print("1. Создаём коллекцию MongoDB...")
+
         create_collection_if_not_exists()
-    
-        print("2. Инициализируем очередь задач...")
+
         init_queue()
-    
-        print("3. Создаём embeddings и добавляем в MongoDB...")
+
         index_files()
 
         STAGE = 1
 
     if STAGE == 1:
-        print("\n=== ЭТАП 2: Добавление ссылок ===")
-    
-        print("4. Пересоздаём очередь...")
+
         init_queue()
-    
-        print("5. Ищем похожие файлы и добавляем ссылки...")
+
         process_links()
 
         STAGE = 0
     
-    print("\n=== Готово! ===")
 
 
 if __name__ == "__main__":

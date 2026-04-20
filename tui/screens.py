@@ -3,7 +3,8 @@ from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.widgets import Header, Footer, ListView, ListItem, Label, ProgressBar, Static, Button, Input
 from tui.scripts.element_counter import count_queue_items
-from dotenv import set_key
+from dotenv import set_key, load_dotenv
+from main import main
 
 class StageScreen(Screen):
     def compose(self) -> ComposeResult:
@@ -35,6 +36,9 @@ class StageScreen(Screen):
 
         target_dir = self.query_one("#target-dir", Input).value.strip()
         set_key(".env", "TARGET_DIR", target_dir)
+        load_dotenv(dotenv_path=".env", override=True)
+
+        main()
 
 
 class ConfirmScreen(ModalScreen[bool]):
@@ -54,7 +58,7 @@ class ConfirmScreen(ModalScreen[bool]):
             self.dismiss(True)
         else:
             self.dismiss(False)
-
+    
 
 class ProgressScreen(Screen):
     def __init__(self) -> None:
