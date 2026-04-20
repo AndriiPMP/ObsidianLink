@@ -4,10 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-target_dir = os.getenv("TARGET_DIR")
-base_dir = os.getenv("BASE_DIR")
-
 def create_backup():
+    target_dir = os.getenv("TARGET_DIR")
+    base_dir = os.getenv("BASE_DIR")
 
     backup_root = os.path.join(base_dir, "backups")
 

@@ -3,17 +3,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-target_dir = os.getenv("TARGET_DIR")
-base_dir = os.getenv("BASE_DIR")
-
 # Функция которая получает полные путя
-def get_file_paths():    
-     file_paths = [] # Тут хранятся пути к файлам                                         
-     for root, directories, files in os.walk(target_dir):            
-         for filename in files:                                     
-             filepath = os.path.join(root, filename)                
-             file_paths.append(filepath)                            
-     return file_paths                                               
+def get_file_paths():   
+    target_dir = os.getenv("TARGET_DIR")
+    file_paths = [] # Тут хранятся пути к файлам                                         
+    for root, directories, files in os.walk(target_dir):            
+        for filename in files:                                     
+            filepath = os.path.join(root, filename)                
+            file_paths.append(filepath)                            
+    return file_paths                                               
 
 # Функция которая получает обрезанные путя
 def format_paths(existing_paths, base_dir):
@@ -39,14 +37,15 @@ def get_files_content():
 
 # Функция которая собирает масив
 def get_files_data():
-      file_paths = get_file_paths()
-      formated_paths = format_paths(get_file_paths, base_dir)
-      contents = get_files_content()
+    base_dir = os.getenv("BASE_DIR")
+    file_paths = get_file_paths()
+    formated_paths = format_paths(get_file_paths, base_dir)
+    contents = get_files_content()
 
-      return [
-          {"path": p, "formated_path": fp, "content": c}
-          for p, fp, c in zip(file_paths, formated_paths, contents)     
-      ]
+    return [
+        {"path": p, "formated_path": fp, "content": c}
+        for p, fp, c in zip(file_paths, formated_paths, contents)     
+    ]
 
 
 

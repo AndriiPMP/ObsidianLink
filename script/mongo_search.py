@@ -1,7 +1,6 @@
-from configuration import client, MONGODB_COLLECTION, MONGODB_VECTOR_INDEX
+from configuration import mongo_client, MONGODB_COLLECTION, MONGODB_VECTOR_INDEX
 from script.ai_integr import generate_embedding
 from redis_implement.redis_queue import get_next_task, task_completed
-import os
 
 collection_name = MONGODB_COLLECTION
 
@@ -86,7 +85,7 @@ def process_links():
         content = task.get("content")
         
         paths = get_formated_paths_from_search(
-            client=client,
+            client=mongo_client,
             collection_name=collection_name,
             content=content,
             limit=3

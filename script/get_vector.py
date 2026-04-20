@@ -1,6 +1,6 @@
 from script.ai_integr import generate_embedding
 from redis_implement.redis_queue import get_next_task, task_completed
-from script.mongo_integr import add_document, client
+from script.mongo_integr import add_document, mongo_client
 
 
 COLLECTION_NAME = "obsidian_base"
@@ -28,7 +28,7 @@ def process_and_add_doc(task: dict):
     embedding = generate_embedding(content)
 
     add_document(
-        client=client,
+        client=mongo_client,
         collection_name=COLLECTION_NAME,
         vector=embedding,
         formated_path=formated_path,
