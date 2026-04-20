@@ -2,6 +2,7 @@ from script.mongo_integr import create_collection_if_not_exists
 from script.mongo_search import process_links
 from redis_implement.redis_queue import init_queue
 from script.get_vector import index_files
+from script.create_backUp import create_backup
 from configuration import MONGODB_COLLECTION
 
 collection_name = MONGODB_COLLECTION
@@ -12,6 +13,9 @@ def main():
     global STAGE
 
     print("=== ObsidianLinks запущен ===\n")
+
+    print("0. Создаём backup...")
+    create_backup()
 
     if STAGE == 0:
     
