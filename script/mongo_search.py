@@ -1,12 +1,13 @@
-from configuration import mongo_client, MONGODB_COLLECTION, MONGODB_VECTOR_INDEX
+from configuration import mongo_client, MONGODB_COLLECTION, MONGODB_VECTOR_INDEX, MONGODB_DB
 from script.ai_integr import generate_embedding
 from redis_implement.redis_queue import get_next_task, task_completed
 
 collection_name = MONGODB_COLLECTION
 
 def search_similar(client, collection_name, content, limit=3):
+    db = client[MONGODB_DB]
     query_vector = generate_embedding(content) 
-    collection = client[collection_name]
+    collection = db[collection_name]
 
     pipeline = [
         {
@@ -26,6 +27,11 @@ def search_similar(client, collection_name, content, limit=3):
             "content": 1,
             "score": {"$meta": "vectorSearchScore"},
             }
+    }
+            {
+            "$match": {
+                "score": {"$gte": 0.775}
+            }
         },
     ]
 
@@ -42,23 +48,35 @@ def get_redis_content(limit=3):
         return[]
 
     return search_similar(
-        client=client,
+        client=mongo_client,
         collection_name=collection_name,
         content=content,
         limit=limit,
     )
 
-def get_formated_paths_from_search(client, collection_name, content, limit=3):
+def get_formated_paths_from_search(client, collection_name, content, current_formated_path, limit=3):
     results = search_similar(client, collection_name, content, limit)
     paths=[]
-    
+
+    current_formated_path = current_formated_path.replace("\\", "/")
+    if current_formated_path.endswith(".md"):
+        current_formated_path = current_formated_path[:-3]
+
     for result in results:
         formated_path = result.get("formated_path")
-        if formated_path:
-                if formated_path.endswith(".md"):
-                    formated_path = formated_path[:-3]
-                formated_path = formated_path.replace("\\", "/")
-                paths.append(formated_path)
+        if not formated_path:
+            continue
+    
+
+        if formated_path.endswith(".md"):
+            formated_path = formated_path[:-3]
+        
+        formated_path = formated_path.replace("\\", "/")
+
+        if formated_path == current_formated_path:
+                continue
+    
+        paths.append(formated_path)
 
     return paths
 
@@ -88,7 +106,8 @@ def process_links():
             client=mongo_client,
             collection_name=collection_name,
             content=content,
-            limit=3
+            current_formated_path=task.get("formated_path"),
+            limit=3,
         )
         
         if paths:

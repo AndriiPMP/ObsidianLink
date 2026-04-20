@@ -5,6 +5,7 @@ from textual.widgets import Header, Footer, ListView, ListItem, Label, ProgressB
 from tui.scripts.element_counter import count_queue_items
 from dotenv import set_key, load_dotenv
 from main import main
+from threading import Thread
 
 class StageScreen(Screen):
     def compose(self) -> ComposeResult:
@@ -38,7 +39,8 @@ class StageScreen(Screen):
         set_key(".env", "TARGET_DIR", target_dir)
         load_dotenv(dotenv_path=".env", override=True)
 
-        main()
+        self.app.push_screen(ProgressScreen())
+        Thread(target=main, daemon=True).start()
 
 
 class ConfirmScreen(ModalScreen[bool]):
@@ -66,8 +68,8 @@ class ProgressScreen(Screen):
         self.total_files = 0
 
     def compose(self) -> ComposeResult:
-        yield Static("Количество файлов которые осталось обработать: 0")
-        yield ProgressBar(total=1, show_percentage=True, show_eta=False)
+        yield Static("Количество файлов которые осталось обработать: 0", id="files-left")
+        yield ProgressBar(total=1, show_percentage=True, show_eta=False, id="files-bar")
 
     def on_mount(self) -> None:
         self.total_files = count_queue_items()

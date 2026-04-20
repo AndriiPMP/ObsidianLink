@@ -4,15 +4,18 @@ from configuration import (
     mongo_client,
     MONGODB_COLLECTION,
     MONGODB_VECTOR_INDEX,
-    MONGODB_VECTOR_DIMENSIONS
+    MONGODB_VECTOR_DIMENSIONS,
+    MONGODB_DB
 )
 
 
 def create_collection_if_not_exists():
-    if MONGODB_COLLECTION not in mongo_client.list_collection_names():
-        mongo_client.create_collection(MONGODB_COLLECTION)
+    db = mongo_client[MONGODB_DB]
 
-    collection = mongo_client[MONGODB_COLLECTION]
+    if MONGODB_COLLECTION not in db.list_collection_names():
+        db.create_collection(MONGODB_COLLECTION)
+
+    collection = db[MONGODB_COLLECTION]
     existing_indexes = {index["name"] for index in collection.list_search_indexes()}
 
     if MONGODB_VECTOR_INDEX not in existing_indexes:
@@ -34,7 +37,8 @@ def create_collection_if_not_exists():
         collection.create_search_index(model=vector_index)
 
 def add_document(client, collection_name, vector, formated_path, full_path, content):
-    collection = client[collection_name]
+    db = client[MONGODB_DB]
+    collection = db[collection_name]
 
     collection.update_one(
         {"_id": formated_path},
