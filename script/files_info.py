@@ -3,43 +3,57 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Функция которая получает полные путя
+
 def get_file_paths():   
+
     target_dir = os.getenv("TARGET_DIR")
-    file_paths = [] # Тут хранятся пути к файлам                                         
-    for root, directories, files in os.walk(target_dir):            
+
+    file_paths = []                      
+
+    for root, directories, files in os.walk(target_dir):   
+
         for filename in files:                                     
             filepath = os.path.join(root, filename)                
-            file_paths.append(filepath)                            
+            file_paths.append(filepath)        
+
     return file_paths                                               
 
-# Функция которая получает обрезанные путя
+
 def format_paths(existing_paths, base_dir):
+
     existing_paths = get_file_paths()
 
-    formated_paths = [] # Тут хранится масив путей отформатированных для ссылок в Obsidian
+    formated_paths = [] 
+
     for path in existing_paths:
         rel_path = os.path.relpath(path, base_dir)
         formated_paths.append(rel_path)
+
     return formated_paths
 
-# Функция которая получает содержимое файлов
 def get_files_content():
+
     contents=[]
+
     for path in get_file_paths():
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
             contents.append(content)
+
         except Exception as e:
             print(f"Не удалось прочитать {path}: {e}")
+
     return contents
 
-# Функция которая собирает масив
 def get_files_data():
+
     base_dir = os.getenv("BASE_DIR")
+
     file_paths = get_file_paths()
+
     formated_paths = format_paths(get_file_paths, base_dir)
+    
     contents = get_files_content()
 
     return [

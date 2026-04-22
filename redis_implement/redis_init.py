@@ -8,6 +8,7 @@ from configuration import r
 queue_name = "embedding_queue"
 
 def init_files_queue():
+
     files_info = get_files_data()
 
     for file_info in files_info:
@@ -18,6 +19,7 @@ def init_files_queue():
 
 
 def main():
+    
     init_queue()
 
     while True:

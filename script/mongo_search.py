@@ -5,8 +5,11 @@ from redis_implement.redis_queue import get_next_task, task_completed
 collection_name = MONGODB_COLLECTION
 
 def search_similar(client, collection_name, content, limit=4):
+
     db = client[MONGODB_DB]
+
     query_vector = generate_embedding(content) 
+
     collection = db[collection_name]
 
     pipeline = [
@@ -19,6 +22,7 @@ def search_similar(client, collection_name, content, limit=4):
             "limit": limit
         }
     },
+
     {
         "$project": {
             "_id": 1,
@@ -26,6 +30,7 @@ def search_similar(client, collection_name, content, limit=4):
             "full_path": 1,
             "content": 1,
             "score": {"$meta": "vectorSearchScore"},
+
             }
     },
             {
@@ -38,7 +43,9 @@ def search_similar(client, collection_name, content, limit=4):
     return list(collection.aggregate(pipeline))
 
 def get_redis_content(limit=4):
+
     task = get_next_task()
+
     if task is None:
         return[
 
@@ -55,10 +62,13 @@ def get_redis_content(limit=4):
     )
 
 def get_formated_paths_from_search(client, collection_name, content, current_formated_path, limit=4):
+
     results = search_similar(client, collection_name, content, limit)
+
     paths=[]
 
     current_formated_path = current_formated_path.replace("\\", "/")
+    
     if current_formated_path.endswith(".md"):
         current_formated_path = current_formated_path[:-3]
 

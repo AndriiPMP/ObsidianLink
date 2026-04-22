@@ -6,6 +6,7 @@ from script.mongo_integr import add_document, mongo_client
 COLLECTION_NAME = "obsidian_base"
 
 def index_files():
+
     while True:
         task = get_next_task()
         
@@ -15,14 +16,16 @@ def index_files():
         
         print(f"   Индексирую: {task.get('path')}")
 
-        process_and_add_doc(task)        
+        process_and_add_doc(task)      
+
         task_completed(task)
 
 def process_and_add_doc(task: dict):
 
-
     file_path = task.get("path")
+
     formated_path = task.get("formated_path")
+    
     content = task.get("content")
 
     embedding = generate_embedding(content)

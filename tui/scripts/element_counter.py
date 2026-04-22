@@ -12,14 +12,17 @@ redis_queue_store = os.path.join(
 redis_queue_store = os.path.abspath(redis_queue_store)
 
 def count_queue_items():
+
     try:
         with open(redis_queue_store, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         pending = data.get("pending", [])
-
+        
         return len(pending)
+    
     except  (FileNotFoundError, json.JSONDecodeError, OSError):
+
         return None
 
 

@@ -10,12 +10,14 @@ from configuration import (
 
 
 def create_collection_if_not_exists():
+
     db = mongo_client[MONGODB_DB]
 
     if MONGODB_COLLECTION not in db.list_collection_names():
         db.create_collection(MONGODB_COLLECTION)
 
     collection = db[MONGODB_COLLECTION]
+
     existing_indexes = {index["name"] for index in collection.list_search_indexes()}
 
     if MONGODB_VECTOR_INDEX not in existing_indexes:
@@ -30,6 +32,7 @@ def create_collection_if_not_exists():
                     }
                 ]
             },
+
             name = MONGODB_VECTOR_INDEX,
             type="vectorSearch",
         )
@@ -37,7 +40,9 @@ def create_collection_if_not_exists():
         collection.create_search_index(model=vector_index)
 
 def add_document(client, collection_name, vector, formated_path, full_path, content):
+
     db = client[MONGODB_DB]
+
     collection = db[collection_name]
 
     collection.update_one(
@@ -50,6 +55,7 @@ def add_document(client, collection_name, vector, formated_path, full_path, cont
                 "embedding": vector,
             }
         },
+        
         upsert=True,
     )
 
