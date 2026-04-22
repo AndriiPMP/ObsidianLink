@@ -3,6 +3,7 @@ from script.mongo_search import process_links
 from redis_implement.redis_queue import init_queue
 from script.get_vector import index_files
 from script.create_backUp import create_backup
+from redis_implement.redis_queue_store import delete_store
 from configuration import MONGODB_COLLECTION
 
 collection_name = MONGODB_COLLECTION
@@ -32,7 +33,8 @@ def main():
         process_links()
 
         STAGE = 0
-    
+
+        delete_store()
 
 
 if __name__ == "__main__":

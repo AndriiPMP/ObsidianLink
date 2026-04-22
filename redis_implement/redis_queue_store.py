@@ -62,3 +62,6 @@ def remove_pending_tasks(task: dict):
     save_queue(update_pending)
 
 
+def delete_store():
+     if os.path.exists(redis_queue_store):
+        os.remove(redis_queue_store)
