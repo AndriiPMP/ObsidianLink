@@ -7,7 +7,7 @@ from threading import Thread
 from tui.screens.progress_screen import ProgressScreen
 from tui.screens.approve_screen import ConfirmScreen
 
-class StageScreen(Screen):
+class AdressScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()

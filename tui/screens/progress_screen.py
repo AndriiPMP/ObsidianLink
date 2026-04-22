@@ -48,3 +48,6 @@ class ProgressScreen(Screen):
 
         label.update(f"Количество файлов которые осталось обработать: {remaining}")
         bar.update(total=max(self.total_files, 1), progress=done)
+
+        if done >= self.total_files:
+            self.app.switch_screen("option")
