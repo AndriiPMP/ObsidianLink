@@ -17,4 +17,6 @@ class OptionScreen(Screen):
     
     def on_list_view_selected(self, event: ListView.Selected) -> None:
         if event.item.id == "create-links":
-            self.app.push_screen(AdressScreen())
+            self.app.push_screen(AdressScreen(action="create-links"))
+        elif event.item.id == "sort":
+            self.app.push_screen(AdressScreen(action="sort"))

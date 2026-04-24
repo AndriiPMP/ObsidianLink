@@ -16,7 +16,21 @@ def get_file_paths():
             filepath = os.path.join(root, filename)                
             file_paths.append(filepath)        
 
-    return file_paths                                               
+    return file_paths  
+
+
+def get_folder_paths():
+    
+    target_dir = os.getenv("TARGET_DIR")
+
+    folder_paths = []
+
+    for root, directories, files in os.walk(target_dir):
+        for directory in directories:
+            folder_path = os.path.join(root, directory)
+            folder_paths.append(folder_path)
+
+    return folder_paths
 
 
 def format_paths(existing_paths, base_dir):

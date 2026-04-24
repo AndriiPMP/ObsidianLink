@@ -1,8 +1,8 @@
-from script.mongo_integr import create_collection_if_not_exists
-from script.mongo_search import process_links
+from script.mongo.mongo_integr import create_collection_if_not_exists
+from script.mongo.mongo_search import process_links
 from redis_implement.redis_queue import init_queue
-from script.get_vector import index_files
-from script.create_backUp import create_backup
+from script.mongo.mongo_get_vector import index_files
+from script.others.create_backUp import create_backup
 from redis_implement.redis_queue_store import delete_store
 from configuration import MONGODB_COLLECTION
 

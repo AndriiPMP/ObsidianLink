@@ -1,5 +1,4 @@
 from pymongo.operations import SearchIndexModel
-from script.hash_alg import generate_hash_filepath
 from configuration import (
     mongo_client,
     MONGODB_COLLECTION,

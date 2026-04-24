@@ -1,6 +1,6 @@
 import os
 import pytest
-from script.files_info import (get_file_paths, 
+from script.others.files_info import (get_file_paths, 
 format_paths, 
 get_files_content, 
 get_files_data, 

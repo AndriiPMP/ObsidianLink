@@ -2,7 +2,7 @@ import os
 import shutil
 import uuid
 
-from script.create_backUp import create_backup
+from script.others.create_backUp import create_backup
 
 
 def test_create_backup_copies_directory():

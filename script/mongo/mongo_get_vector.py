@@ -1,6 +1,6 @@
 from script.ai_integr import generate_embedding
 from redis_implement.redis_queue import get_next_task, task_completed
-from script.mongo_integr import add_document, mongo_client
+from script.mongo.mongo_integr import add_document, mongo_client
 
 
 COLLECTION_NAME = "obsidian_base"

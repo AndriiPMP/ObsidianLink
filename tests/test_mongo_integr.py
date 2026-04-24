@@ -1,11 +1,11 @@
 from pymongo.operations import SearchIndexModel
-from script.mongo_integr import (
+from script.mongo.mongo_integr import (
         create_collection_if_not_exists,
         MONGODB_COLLECTION,
         MONGODB_VECTOR_INDEX,
         MONGODB_VECTOR_DIMENSIONS,
     )
-from script.mongo_integr import create_collection_if_not_exists
+from script.mongo.mongo_integr import create_collection_if_not_exists
 
 def test_create_collection_if_not_exists(mocker):
 

@@ -2,7 +2,7 @@ from textual.screen import Screen
 from textual.app import ComposeResult
 from textual.widgets import Header, Footer, ListView, ListItem, Label, Button, Input
 from dotenv import set_key, load_dotenv
-from main import main
+from script.assembled.assembled_create_links import main
 from threading import Thread
 from tui.screens.progress_screen import ProgressScreen
 from tui.screens.approve_screen import ConfirmScreen
@@ -44,4 +44,8 @@ class AdressScreen(Screen):
         load_dotenv(dotenv_path=".env", override=True)
 
         self.app.push_screen(ProgressScreen())
-        Thread(target=main, daemon=True).start()
+
+        if self.action == "create-links":
+            Thread(target=main, daemon=True).start()
+        elif self.action == "sort":
+            Thread(target=some_other_main, daemon=True).start()

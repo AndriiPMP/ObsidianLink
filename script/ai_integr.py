@@ -15,3 +15,13 @@ def generate_embedding(text):
     )
     
     return responce.data[0].embedding
+
+def generate_text(prompt: str) -> str:
+    responce = client.chat.completions.create(
+        model="gpt-4o-mini",  # или твоя локальная LLM
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    return responce.choices[0].message.content
