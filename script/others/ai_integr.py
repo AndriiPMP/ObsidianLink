@@ -1,5 +1,5 @@
 from openai import OpenAI
-from files_info import get_folder_paths, get_files_sort_content
+from script.others.files_process import get_folder_paths, get_files_sort_content
 import json
 import os
 

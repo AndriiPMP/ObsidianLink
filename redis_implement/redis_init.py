@@ -1,6 +1,6 @@
 import time
 import json
-from script.others.files_info import get_files_data
+from script.others.files_process import get_files_data
 from redis_implement.redis_queue import get_next_task, task_completed, init_queue
 from redis_implement.redis_proccess_files import process_file 
 from configuration import r
