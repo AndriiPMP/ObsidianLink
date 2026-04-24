@@ -1,5 +1,5 @@
 from configuration import mongo_client, MONGODB_COLLECTION, MONGODB_VECTOR_INDEX, MONGODB_DB
-from script.ai_integr import generate_embedding
+from script.others.ai_integr import generate_embedding
 from redis_implement.redis_queue import get_next_task, task_completed
 
 collection_name = MONGODB_COLLECTION

@@ -1,5 +1,4 @@
-import pytest
-from script.ai_integr import generate_embedding
+from script.others.ai_integr import generate_embedding
 
 def test_generaye_embedding():
     test_text = "Это тестовый текст для генерации эмбеддинга"

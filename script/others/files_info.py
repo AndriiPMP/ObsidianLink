@@ -19,18 +19,35 @@ def get_file_paths():
     return file_paths  
 
 
-def get_folder_paths():
+def get_folder_paths(TARGET_DIR):
     
-    target_dir = os.getenv("TARGET_DIR")
+    target_dir = os.getenv(TARGET_DIR)
 
     folder_paths = []
 
     for root, directories, files in os.walk(target_dir):
+
         for directory in directories:
             folder_path = os.path.join(root, directory)
             folder_paths.append(folder_path)
 
     return folder_paths
+
+def get_files_sort_content(SORT_DIR):
+
+    target_dir = os.getenv(SORT_DIR)
+
+    contents = []
+
+    if os.path.isfile(target_dir):
+
+        try:
+            with open(target_dir, "r", encoding="utf-8") as f:
+                contents.append(f.read())
+        except Exception as e:
+                print(f"Не удалось прочитать {target_dir}: {e}")
+
+    return contents
 
 
 def format_paths(existing_paths, base_dir):
@@ -50,6 +67,7 @@ def get_files_content():
     contents=[]
 
     for path in get_file_paths():
+        
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 content = f.read()
