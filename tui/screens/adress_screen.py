@@ -2,7 +2,8 @@ from textual.screen import Screen
 from textual.app import ComposeResult
 from textual.widgets import Header, Footer, ListView, ListItem, Label, Button, Input
 from dotenv import set_key, load_dotenv
-from script.assembled.assembled_create_links import main
+from script.assembled.assembled_create_links import create_links
+from script.assembled.assembled_sort_files import sort_files
 from threading import Thread
 from tui.screens.progress_screen import ProgressScreen
 from tui.screens.approve_screen import ConfirmScreen
@@ -47,10 +48,11 @@ class AdressScreen(Screen):
 
         if self.action == "create-links":
             screen = ProgressScreen()
-            target = main
+            target = create_links
         elif self.action == "sort":
+            target = sort_files
             screen = LoadingScreen()
-            target = some_other_main
+  
         else:
             return
         

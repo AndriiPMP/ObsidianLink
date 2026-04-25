@@ -10,7 +10,7 @@ collection_name = MONGODB_COLLECTION
 
 STAGE = 0
 
-def main():
+def create_links():
     global STAGE
 
 
@@ -36,8 +36,5 @@ def main():
 
         delete_store()
 
-
-if __name__ == "__main__":
-    main()
 
 
