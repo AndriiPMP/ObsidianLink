@@ -4,7 +4,6 @@ from textual.widgets import ProgressBar, Static, Button
 from tui.scripts.element_counter import count_queue_items
 import os
 from redis_implement.redis_queue_store import redis_queue_store
-from screens.option_screen import OptionScreen
 
 class ProgressScreen(Screen):
 
@@ -58,4 +57,4 @@ class ProgressScreen(Screen):
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
             if event.button.id == "to-option":
-                self.app.push_screen(OptionScreen())
+                self.app.switch_screen("option")

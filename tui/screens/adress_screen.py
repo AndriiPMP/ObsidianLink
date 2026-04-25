@@ -10,6 +10,10 @@ from tui.screens.approve_screen import ConfirmScreen
 from tui.screens.loading_screen import LoadingScreen
 
 class AdressScreen(Screen):
+    
+    def __init__(self, action: str) -> None:
+    self.action = action
+    super().__init__()
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -47,8 +51,8 @@ class AdressScreen(Screen):
 
 
         if self.action == "create-links":
-            screen = ProgressScreen()
             target = create_links
+            screen = ProgressScreen()
         elif self.action == "sort":
             target = sort_files
             screen = LoadingScreen()

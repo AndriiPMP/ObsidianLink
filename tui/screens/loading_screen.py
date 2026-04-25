@@ -2,7 +2,6 @@ from textual.app import ComposeResult
 from textual.screen import Screen
 from textual.widgets import LoadingIndicator
 from script.assembled.assembled_sort_files import task_done
-from screens.option_screen import OptionScreen
 from threading import Thread
 
 
@@ -16,4 +15,4 @@ class LoadingScreen(Screen):
 
     def _wait_done(self) -> None:
         task_done.wait()
-        self.app.call_from_thread(self.app.switch_screen, OptionScreen())
+        self.app.call_from_thread(self._go_home)

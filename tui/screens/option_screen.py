@@ -5,7 +5,9 @@ from tui.screens.adress_screen import AdressScreen
 
 class OptionScreen(Screen): 
 
+
     def compose(self) -> ComposeResult:
+
         yield ListView(
             ListItem(Label("Создание связей"), id="create-links"),
             ListItem(Label("Сортировка"), id="sort"),
