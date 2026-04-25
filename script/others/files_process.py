@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 import shutil
-from pathlib import Path           
+from pathlib import Path        
+from script.others.ai_integr import generate_text   
 
 load_dotenv()
 
@@ -21,9 +22,9 @@ def get_file_paths():
     return file_paths  
 
 
-def get_folder_paths(TARGET_DIR):
+def get_folder_paths():
     
-    target_dir = os.getenv(TARGET_DIR)
+    target_dir = os.getenv("SORT_DIR")
 
     folder_paths = []
 
@@ -35,21 +36,35 @@ def get_folder_paths(TARGET_DIR):
 
     return folder_paths
 
-def get_files_sort_content(SORT_DIR):
+def get_files_sort_content():
 
-    target_dir = os.getenv(SORT_DIR)
+    paths = get_sort_files()
 
     contents = []
 
-    if os.path.isfile(target_dir):
-
+    for path in paths:
+        
         try:
-            with open(target_dir, "r", encoding="utf-8") as f:
-                contents.append(f.read())
+            with open(path, "r", encoding="utf-8") as f:
+                    contents.append(f.read())
         except Exception as e:
-                print(f"Не удалось прочитать {target_dir}: {e}")
+            print(f"Не удалось прочитать {path}: {e}")
 
     return contents
+
+def get_sort_files() -> list[str]:
+
+    sort_dir = os.getenv("SORT_DIR")
+
+    if not sort_dir or not os.path.isdir(sort_dir):
+        return []
+
+    paths = []
+    for root, _, files in os.walk(sort_dir):
+        for name in files:
+            paths.append(os.path.join(root, name))
+
+    return paths
 
 
 def format_paths(existing_paths, base_dir):
@@ -95,9 +110,10 @@ def get_files_data():
         for p, fp, c in zip(file_paths, formated_paths, contents)     
     ]
 
-def move_file_by_model(model_path: str):
+def move_file_by_model():
+    model_path = generate_text()
 
-    sort_dir = os.getenv("SORT_DIR")
+    sort_dir = os.getenv("TARGET_DIR")
 
     source_path = Path(sort_dir)
     target_dir = Path(model_path)

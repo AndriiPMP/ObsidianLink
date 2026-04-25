@@ -19,18 +19,19 @@ def generate_embedding(text):
     
     return responce.data[0].embedding
 
-payload = {
+
+def generate_text(prompt: str) -> str:
+
+    payload = {
     "task": """Analyze the contents and subject of the sort, then from the entire
             list of folders provided, select the exact directory
             in which the file should be located. Once you've selected the correct
             directory, copy it into your answer, word for word, character for character.""",
     "folders": get_folder_paths(),
     "sort": get_files_sort_content(),
-}
-
-def generate_text(prompt: str) -> str:
+    }
      
-    prompt = json.dumps()
+    prompt = json.dumps(payload, ensure_ascii=False, indent=2)
 
     responce = client.chat.completions.create(
         model="qwen/qwen3.5-9b",  

@@ -6,6 +6,7 @@ from script.assembled.assembled_create_links import main
 from threading import Thread
 from tui.screens.progress_screen import ProgressScreen
 from tui.screens.approve_screen import ConfirmScreen
+from tui.screens.loading_screen import LoadingScreen
 
 class AdressScreen(Screen):
 
@@ -43,9 +44,15 @@ class AdressScreen(Screen):
         set_key(".env", "TARGET_DIR", target_dir)
         load_dotenv(dotenv_path=".env", override=True)
 
-        self.app.push_screen(ProgressScreen())
 
         if self.action == "create-links":
-            Thread(target=main, daemon=True).start()
+            screen = ProgressScreen()
+            target = main
         elif self.action == "sort":
-            Thread(target=some_other_main, daemon=True).start()
+            screen = LoadingScreen()
+            target = some_other_main
+        else:
+            return
+        
+        self.app.push_screen(screen)
+        Thread(target=target, daemon=True).start()
