@@ -10,4 +10,4 @@ def sort_files():
         create_backup()
         move_file_by_model()
     finally:
-        task_done.set()
+        task_done.set(build_payloads)

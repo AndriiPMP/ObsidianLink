@@ -21,8 +21,6 @@ def get_file_paths():
 
 def format_paths(existing_paths, base_dir):
 
-    existing_paths = get_file_paths()
-
     formated_paths = [] 
 
     for path in existing_paths:

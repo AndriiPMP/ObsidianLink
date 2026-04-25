@@ -20,7 +20,7 @@ def create_links():
 
         create_collection_if_not_exists()
 
-        init_queue()
+        init_queue(get_files_data)
 
         index_files()
 

@@ -24,9 +24,7 @@ def load_queue_state() -> dict:
 def save_queue(pending_tasks: list):
 
     state = {
-        "pending": pending_tasks, 
-        "last_updated": datetime.now().isoformat(),
-        "count": len(pending_tasks)
+        "pending": pending_tasks,
     }
 
     try:

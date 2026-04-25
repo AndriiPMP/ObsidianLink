@@ -4,17 +4,19 @@ from redis_implement.redis_queue_store import (get_pending_tasks,
                                                has_pending_tasks, 
                                                remove_pending_tasks)
 from script.others.files_process import get_files_data
+from script.others.files_for_movement import build_payloads
 from configuration import r
 
 queue_name = "tasks"
 
-def init_queue():
+def init_queue(data_builder):
+    
+    files_info = data_builder()
 
     if has_pending_tasks():
         restore_queue()
-
     else:
-        create_new_queue()
+        create_new_queue(files_info)
 
 def restore_queue():
 
@@ -26,9 +28,7 @@ def restore_queue():
         r.rpush(queue_name, json.dumps(task))
 
 
-def create_new_queue():
-
-    files_info = get_files_data()
+def create_new_queue(files_info):
 
     r.delete(queue_name)
     

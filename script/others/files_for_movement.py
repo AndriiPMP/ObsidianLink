@@ -4,6 +4,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+TASK = """Analyze the contents and subject of the sort, then from the entire
+    list of folders provided, select the exact directory
+    in which the file should be located. Once you've selected the correct
+    directory, copy it into your answer, word for word, character for character."""
+
 def get_folder_paths():
     
     target_dir = os.getenv("SORT_DIR")
@@ -47,3 +52,17 @@ def get_sort_files() -> list[str]:
             paths.append(os.path.join(root, name))
 
     return paths
+
+
+def build_payloads():
+    folders = get_folder_paths()
+    payloads = []
+
+    for item in get_files_sort_content():
+        payloads.append({
+            "task": TASK,
+            "folders": folders,
+            "sort": item,
+        })
+
+    return payloads
