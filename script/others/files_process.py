@@ -29,11 +29,11 @@ def format_paths(existing_paths, base_dir):
 
     return formated_paths
 
-def get_files_content():
+def get_files_content(paths):
 
     contents=[]
 
-    for path in get_file_paths():
+    for path in paths:
         
         try:
             with open(path, 'r', encoding='utf-8') as f:
@@ -51,9 +51,9 @@ def get_files_data():
 
     file_paths = get_file_paths()
 
-    formated_paths = format_paths(get_file_paths, base_dir)
+    formated_paths = format_paths(file_paths, base_dir)
     
-    contents = get_files_content()
+    contents = get_files_content(file_paths)
 
     return [
         {"path": p, "formated_path": fp, "content": c}

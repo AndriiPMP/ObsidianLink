@@ -1,6 +1,7 @@
 import shutil
 from pathlib import Path        
 from script.others.ai_integr import generate_text   
+import os
 
 def move_file_by_model():
     
