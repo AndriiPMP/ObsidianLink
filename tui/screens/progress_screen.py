@@ -16,7 +16,6 @@ class ProgressScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Static("Количество файлов которые осталось обработать: 0", id="files-left")
         yield ProgressBar(total=1, show_percentage=True, show_eta=False, id="files-bar")
-        yield Button("Перейти к выбору", id="to-option", disabled=True)
 
     def on_mount(self) -> None:
         self.set_interval(0.5, self.wait_for_queue_file)

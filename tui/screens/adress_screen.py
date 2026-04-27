@@ -38,21 +38,22 @@ class AdressScreen(Screen):
     def on_button_pressed(self, event: Button.Pressed):
 
         if event.button.id != "start":
-            error = self.query_one("#error-text", Static)
+            return
+            
+        error = self.query_one("#error-text", Static)
+        
 
-            target_dir = self.query_one("#target-dir", Input).value.strip()
-            if not target_dir:
+        target_dir = self.query_one("#target-dir", Input).value.strip()
+        if not target_dir:
+            error.update("Не все поля заполнены")
+            return
+
+        if self.action == "sort":
+            sort_dir = self.query_one("#sort-dir", Input).value.strip()
+            if not sort_dir:
                 error.update("Не все поля заполнены")
                 return
-
-            if self.action == "sort":
-                sort_dir = self.query_one("#sort-dir", Input).value.strip()
-                if not sort_dir:
-                    error.update("Не все поля заполнены")
-                    return
-                
         error.update("")
-
         self.app.push_screen(ConfirmScreen(target_dir), self.on_confirm)
 
     def on_confirm(self, confirmed: bool):

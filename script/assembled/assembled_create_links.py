@@ -29,7 +29,7 @@ def create_links():
 
     if STAGE == 1:
 
-        init_queue()
+        init_queue(get_files_data)
 
         process_links()
 

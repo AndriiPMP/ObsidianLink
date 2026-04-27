@@ -8,7 +8,7 @@ TASK = """Analyze the contents and subject of the sort, then from the entire
     list of folders provided, select the exact directory
     in which the file should be located. Once you've selected the correct
     directory, copy it into your answer, word for word, character for character.
-    If you think that none of the given paths suits you, just answer this: C:\Users\gote2\Desktop\План\Промежуточный материал\На переработку"""
+    If you think that none of the given paths suits you, just answer this: C:\\Users\\gote2\\Desktop\\План\\Промежуточный материал\\На переработку"""
 
 def get_folder_paths():
     
