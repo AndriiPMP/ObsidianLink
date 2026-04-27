@@ -11,7 +11,6 @@ class ObsidianAuto(App):
         "option": OptionScreen,
         "adress": AdressScreen,
         "progress": ProgressScreen,
-        "loading": LoadingScreen,
     }
 
     def on_mount(self) -> None:

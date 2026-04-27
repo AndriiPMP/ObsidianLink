@@ -4,6 +4,7 @@ from redis_implement.redis_queue import init_queue
 from script.mongo.mongo_get_vector import index_files
 from script.others.create_backUp import create_backup
 from redis_implement.redis_queue_store import delete_store
+from script.others.files_process import get_files_data
 from configuration import MONGODB_COLLECTION
 
 collection_name = MONGODB_COLLECTION
