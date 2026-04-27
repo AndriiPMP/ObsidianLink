@@ -27,7 +27,7 @@ class AdressScreen(Screen):
                 placeholder="Путь к файлам",
                 id="sort-dir",
             )
-        yield Static("Не все поля заполнены", id="error-text")    
+        yield Static("", id="error-text")    
         yield Button("Сохранить и начать", id="start")
         yield Footer()
 
