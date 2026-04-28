@@ -14,7 +14,7 @@ class ProgressScreen(Screen):
         self._option_button_shown = False
 
     def compose(self) -> ComposeResult:
-        yield Static("Количество файлов которые осталось обработать: 0", id="files-left")
+        yield Static("The number of files remained: 0", id="files-left")
         yield ProgressBar(total=1, show_percentage=True, show_eta=False, id="files-bar")
 
     def on_mount(self) -> None:
@@ -52,7 +52,7 @@ class ProgressScreen(Screen):
 
         if done >= self.total_files and not self._option_button_shown:
             self._option_button_shown = True
-            self.mount(Button("Завершить и вернуться", id="to-option"))
+            self.mount(Button("Finsh and go back", id="to-option"))
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
             if event.button.id == "to-option":

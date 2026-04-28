@@ -17,14 +17,14 @@ class AdressScreen(Screen):
         yield Header()
         yield Input(
             value="",
-            placeholder="Путь к папке",
+            placeholder="Path to files",
             id="target-dir",
         )
         
         if self.action == "sort":
             yield Input(
                 value="",
-                placeholder="Путь к файлам",
+                placeholder="Path to folders",
                 id="sort-dir",
             )
         yield Static("", id="error-text")    
@@ -44,13 +44,13 @@ class AdressScreen(Screen):
 
         target_dir = self.query_one("#target-dir", Input).value.strip()
         if not target_dir:
-                error.update("Не все поля заполнены")
+                error.update("Fill all fields")
                 return
 
         if self.action == "sort":
             sort_dir = self.query_one("#sort-dir", Input).value.strip()
             if not sort_dir:
-                error.update("Не все поля заполнены")
+                error.update("Fill all fields")
                 return
                 
         error.update("")

@@ -9,8 +9,8 @@ class OptionScreen(Screen):
     def compose(self) -> ComposeResult:
 
         yield ListView(
-            ListItem(Label("Создание связей"), id="create-links"),
-            ListItem(Label("Сортировка"), id="sort"),
+            ListItem(Label("Create links"), id="create-links"),
+            ListItem(Label("Sort files"), id="sort"),
             id="options-list",
         )
 

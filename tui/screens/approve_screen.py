@@ -10,9 +10,9 @@ class ConfirmScreen(ModalScreen[bool]):
 
     def compose(self) -> ComposeResult:
         yield Vertical(
-            Static("Начать обработку?"),
-            Button("Да", id="yes"),
-            Button("Нет", id="no"),
+            Static("Start processing?"),
+            Button("Yes", id="yes"),
+            Button("No", id="no"),
         )
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
