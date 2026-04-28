@@ -28,17 +28,19 @@ def get_files_sort_content():
 
     paths = get_sort_files()
 
-    contents = []
+    files_data  = []
 
     for path in paths:
         
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                    contents.append(f.read())
-        except Exception as e:
-            print(f"Не удалось прочитать {path}: {e}")
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
 
-    return contents
+        files_data.append({
+            "path": path,
+            "content": content,
+        })
+
+    return files_data
 
 def get_sort_files() -> list[str]:
 
@@ -61,9 +63,10 @@ def build_payloads():
 
     for item in get_files_sort_content():
         payloads.append({
+            "path": item["path"],
             "task": TASK,
             "folders": folders,
-            "sort": item,
+            "sort": item["content"],
         })
 
     return payloads

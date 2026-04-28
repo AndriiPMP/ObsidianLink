@@ -10,7 +10,7 @@ def sort_files():
 
     try:
         init_queue(build_payloads)
-        create_backup()
+        """ create_backup() """
         sort_files_movement()
     finally:
         task_done.set()

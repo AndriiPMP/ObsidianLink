@@ -39,20 +39,20 @@ class AdressScreen(Screen):
 
         if event.button.id != "start":
             return
-            
-        error = self.query_one("#error-text", Static)
         
+        error = self.query_one("#error-text", Static)
 
         target_dir = self.query_one("#target-dir", Input).value.strip()
         if not target_dir:
-            error.update("Не все поля заполнены")
-            return
+                error.update("Не все поля заполнены")
+                return
 
         if self.action == "sort":
             sort_dir = self.query_one("#sort-dir", Input).value.strip()
             if not sort_dir:
                 error.update("Не все поля заполнены")
                 return
+                
         error.update("")
         self.app.push_screen(ConfirmScreen(target_dir), self.on_confirm)
 
